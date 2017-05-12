@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="24">
+  <Forms>
+    <BACForm Class="TCEForm" Encoding="Ascii85">jgrld):ZT#9p{H/Kdq1uh)kEQa*1=DaoFoN-KZ.qsMJVsO+d^EDUBn=3)X5}.lwj:.)d4ko]N(B/D[Y6l%B=xXTHpQlivma.lzJyhTg4?$.uqwcsyzWnp5;JG^z]dEUEevs3FePABz4diRn]PqnKWl)+$S6@I:JmdqYT6x+pEHAVLvwXQi7g2wp]Qc^uXY1ZA^AIn{*.Src3(9A%#6[)POryaA6TAOd)[w^b$vF/SE_]hqWITktXO3YxO1+NPQJvyUW31OjV^)kYDyg{]RV0A(lhga81GA%kd!Qj0Ogp?Ql*@i*8d3JM:JgQ[gwnM8zj:HV0+3jmw3h7XkD=3g]zI4]SPrSF$gBcBMQE_FIaQsX6=rj/7FOb}[7HuQ4]@nC,0Wz}jjw5J{S]_hdV^696z-/i5u3VZ5Y%Bwv})K=sX63L*[A{^)x;RTcOu},290V2)o$N}TFi+A+H/UMP6x}S-oX@Y2Bo#Q/@=E]e43T(THzfb6)%^-UPUZws4N{aY,KgAL4R,;uQ)}VM5)WO+8b{C*(Q3=-HDzJS?:Y2{mEv1s#t8^+VQmduZs3zDEAattVfrPziU@0D2sKaO.Ud]_juTQFs]dWb{TV}a7H8;vJQM9T+YV+ro7Na$U$NXGePAN(UMWGlP_ECP(%B_u%8LveI]jnO[GEeS^5yANgf6aoVXia;ig:kIdGPbRM</BACForm>
+  </Forms>
+  <CheatEntries>
+    <CheatEntry>
+      <ID>13371</ID>
+      <Description>"Initialize"</Description>
+      <Options moHideChildren="1"/>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+--loadTable(TrainerOrigin.."IgroWidgets/IgroWidgets.CT", true)
+
+[DISABLE]
+
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1337011337</ID>
+          <Description>"Byte Array Converter"</Description>
+          <LastState/>
+          <Color>000000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{
+ Author: Igromanru
+ Date  : 2017-05-06
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local function toHex(o) return string.format("%X",o) end
+local function escape(str) return str:gsub('[[.*+?()^$%%-]','%%%1') end
+
+--[ Hex functions START ]--
+function HexEditKeyPress(sender, key)
+  local result = key
+  if string.match(key, "([g-zG-Z%p])") ~= nil then
+    result = nil
+  end
+  return result
+end
+
+function HexConvertButtonClick(sender)
+ if igro:isNotEmpty(BACForm.HexEdit.Text) then
+    BACForm.DecEdit.Text = igro:hexToDecimal(BACForm.HexEdit.Text)
+    BACForm.BytesEdit.Text = igro:hexToByteArray(toSelectedHex(tonumber(BACForm.HexEdit.Text,16)))
+    BACForm.FloatEdit.Text = igro:hexToFloat(BACForm.HexEdit.Text)
+  end
+end
+
+function HexCopyButtonClick(sender)
+  BACForm.HexEdit.selectAll()
+  BACForm.HexEdit.copyToClipboard()
+end
+--[ Hex functions END ]--
+
+--[ Decimal functions START ]--
+function DecEditKeyPress(sender, key)
+  local result = key
+  if string.match(key, "([%l%u%s%p])") ~= nil then
+    result = nil
+  end
+  return result
+end
+
+function DecConvertButtonClick(sender)
+  if igro:isNotEmpty(BACForm.DecEdit.Text) then
+    BACForm.HexEdit.Text = toSelectedHex(BACForm.DecEdit.Text)
+    BACForm.BytesEdit.Text = igro:hexToByteArray(toSelectedHex(BACForm.DecEdit.Text))
+    BACForm.FloatEdit.Text = ""
+  end
+end
+
+function DecCopyButtonClick(sender)
+  BACForm.DecEdit.selectAll()
+  BACForm.DecEdit.copyToClipboard()
+end
+--[ Decimal functions END ]--
+
+--[ Byte Array functions START ]--
+function BytesEditKeyPress(sender, key)
+  local result = key
+  if string.match(key, "([g-zG-Z%p])") ~= nil then
+    result = nil
+  end
+  return result
+end
+
+function BytesConvertButtonClick(sender)
+  if igro:isNotEmpty(BACForm.BytesEdit.Text) then
+    BACForm.HexEdit.Text = igro:byteArrayToHex(BACForm.BytesEdit.Text)
+    BACForm.DecEdit.Text = igro:byteArrayToDecimal(BACForm.BytesEdit.Text)
+    BACForm.FloatEdit.Text = igro:byteArrayToFloat(BACForm.BytesEdit.Text)
+  end
+end
+
+function BytesCopyButtonClick(sender)
+  BACForm.BytesEdit.selectAll()
+  BACForm.BytesEdit.copyToClipboard()
+end
+--[ Byte Array functions END ]--
+
+--[ Float functions START ]--
+function FloatEditKeyPress(sender, key)
+  local result = key
+  if string.match(key, "([%l%u%s,;:%+_%?])") ~= nil then
+    result = nil
+  end
+  return result
+end
+
+function FloatConvertButtonClick(sender)
+  if igro:isNotEmpty(BACForm.FloatEdit.Text) then
+    BACForm.HexEdit.Text = igro:floatToHex(tonumber(BACForm.FloatEdit.Text))
+    BACForm.DecEdit.Text = igro:floatToDecimal(tonumber(BACForm.FloatEdit.Text))
+    BACForm.BytesEdit.Text = igro:floatToByteArray(tonumber(BACForm.FloatEdit.Text))
+  end
+end
+
+function FloatCopyButtonClick(sender)
+  BACForm.FloatEdit.selectAll()
+  BACForm.FloatEdit.copyToClipboard()
+end
+--[ Float functions END ]--
+
+--[ Length ComboBox functions START ]--
+function LengthComboBoxChange(sender)
+  print(sender.ItemIndex)
+end
+
+function getSelectedLength()
+  local index = BACForm.LengthComboBox.getItemIndex()
+  local length = 1
+  if(index == 0) -- Byte
+  then
+    -- default 1
+  elseif(index == 1) -- 2 Bytes
+  then
+    length = 2
+  elseif(index == 2) -- 4 Bytes
+  then
+    length = 4
+  elseif(index == 3) -- 8 Bytes
+  then
+    length = 8
+  end
+  return length
+end
+
+function toSelectedHex(object)
+  return igro:toHexLegth(object, getSelectedLength())
+end
+--[ Length ComboBox functions END ]--
+
+
+--[ BACForm functions START ]--
+function BACFormClose(sender)
+  local record = igro:getRecordById(1337011337)
+  record.Active = false
+  return caHide --Possible options: caHide, caFree, caMinimize, caNone
+end
+--[ BACForm functions END ]--
+
+-- Hex
+BACForm.HexEdit.OnKeyPress = HexEditKeyPress
+BACForm.HexConvertButton.OnClick = HexConvertButtonClick
+BACForm.HexCopyButton.OnClick = HexCopyButtonClick
+-- Decimal
+BACForm.DecEdit.OnKeyPress = DecEditKeyPress
+BACForm.DecConvertButton.OnClick = DecConvertButtonClick
+BACForm.DecCopyButton.OnClick = DecCopyButtonClick
+-- Byte Array
+BACForm.BytesEdit.OnKeyPress = BytesEditKeyPress
+BACForm.BytesConvertButton.OnClick = BytesConvertButtonClick
+BACForm.BytesCopyButton.OnClick = BytesCopyButtonClick
+-- Float
+BACForm.FloatEdit.OnKeyPress = FloatEditKeyPress
+BACForm.FloatConvertButton.OnClick = FloatConvertButtonClick
+BACForm.FloatCopyButton.OnClick = FloatCopyButtonClick
+--Form
+BACForm.OnClose = BACFormClose
+
+--Init
+BACForm.HexEdit.clear()
+BACForm.DecEdit.clear()
+BACForm.BytesEdit.clear()
+BACForm.FloatEdit.clear()
+BACForm.LengthComboBox.setItemIndex(2)
+
+BACForm.show()
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+BACForm.close()
+
+
+									
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
