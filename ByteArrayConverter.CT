@@ -356,9 +356,6 @@ BACForm.show()
 {$lua}
 if syntaxcheck then return end
 BACForm.close()
-
-
-									
 </AssemblerScript>
         </CheatEntry>
       </CheatEntries>
